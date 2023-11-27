@@ -8,6 +8,10 @@ import time
 import concurrent.futures
 import aiohttp
 import asyncio
+import os
+from dotenv import load_dotenv
+
+api_key = os.getenv("OPENTRIP_API")
 # Want: 
 # assume that the user already has an idea of what area they want to hit. Ex: southern california instead of the united states
 # keep the criteria small, reduce the complexity 
@@ -37,28 +41,6 @@ import asyncio
 # create a user profile:
 ## rate how much a type of attraction interests you
 
-## four square api key: fsq3rtKuEeqb1XCvMGwzGIhslv4LGePcRYRqXAhCxFaBXMg=
-##### USE FOUR SQUARE TO GET A LIST OF ATTRACTIONS
-# can use the features in a model 
-
-# url = "https://api.foursquare.com/v3/places/search"
-
-# headers = {
-#     "accept": "application/json",
-#     "Authorization": "fsq3rtKuEeqb1XCvMGwzGIhslv4LGePcRYRqXAhCxFaBXMg="
-# }
-# params = {
-#     # "query": "coffee",
-#   	"ll": "34.0522,-118.2437",
-#   	# "open_now": "true",
-#   	# "sort":"DISTANCE"
-# }
-
-
-# response = requests.get(url, headers=headers, params=params)
-
-# print(response.text)
-
 # using opentrip map to get attractions and its information
 
 def get_geoname(destination):
@@ -67,7 +49,7 @@ def get_geoname(destination):
     """
     base_url = "https://api.opentripmap.com/0.1/en/places/geoname"
     params = {
-        "apikey": "5ae2e3f221c38a28845f05b6206760d37e97518692bd93fe307403b9",
+        "apikey": api_key,
         "name": destination
     }
     response = requests.get(base_url, params=params).json()
@@ -80,7 +62,7 @@ def get_attractions(lat, lon):
     # point instead of radius (?)
     base_url = "https://api.opentripmap.com/0.1/en/places/radius"
     params = {
-        "apikey": "5ae2e3f221c38a28845f05b6206760d37e97518692bd93fe307403b9",
+        "apikey": api_key,
         "lat": lat,
         "lon": lon,
         "radius": 10000,   # Radius (in meters) to search for attractions around the destination
@@ -103,7 +85,7 @@ def get_xid(x):
     """
     Function to get detailed information about a place
     """
-    url = "https://api.opentripmap.com/0.1/en/places/xid/" + x + "?apikey=5ae2e3f221c38a28845f05b6206760d37e97518692bd93fe307403b9"
+    url = "https://api.opentripmap.com/0.1/en/places/xid/" + x + f"?apikey={api_key}"
     response = requests.get(url)
     try:
         return response.json()['wikipedia_extracts']['text']

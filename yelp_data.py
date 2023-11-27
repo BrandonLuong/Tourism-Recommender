@@ -6,14 +6,18 @@ from sklearn.feature_extraction.text import CountVectorizer
 import multiprocessing as mp
 import time
 from operator import itemgetter
-# client id: YNj8LQ2sLnfDp_InHUP7DA
-# api key: hL38maWJTKt5PEepZ9HxdB-S28pxmTNXPdBjqZyfD8uuWRx8zPOT5ISGKpkDV9LywJp2VW3NgEsInAPvgBGJ6xiLc9TViJaoEk2xO4Vbtlr6sfdH2zaOnfkaopHKZHYx
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+api_key = os.getenv("YELP_API")
+secret = os.getenv("YELP_CLIENT")
 def get_businesses(loc):
     url = "https://api.yelp.com/v3/businesses/search"
 
     headers = {
         "accept": "application/json",
-        "Authorization": "Bearer hL38maWJTKt5PEepZ9HxdB-S28pxmTNXPdBjqZyfD8uuWRx8zPOT5ISGKpkDV9LywJp2VW3NgEsInAPvgBGJ6xiLc9TViJaoEk2xO4Vbtlr6sfdH2zaOnfkaopHKZHYx"
+        "Authorization": api_key
     }
     params = {
         "location": loc,
@@ -33,7 +37,7 @@ def fetch_business_details(id):
 
     headers = {
         "accept": "application/json",
-        "Authorization": "Bearer hL38maWJTKt5PEepZ9HxdB-S28pxmTNXPdBjqZyfD8uuWRx8zPOT5ISGKpkDV9LywJp2VW3NgEsInAPvgBGJ6xiLc9TViJaoEk2xO4Vbtlr6sfdH2zaOnfkaopHKZHYx"
+        "Authorization": api_key
     }
     # params = {
     #     "business_id_or_alias": id
